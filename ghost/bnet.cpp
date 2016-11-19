@@ -1803,7 +1803,7 @@ void CBNET :: ProcessChatEvent( CIncomingChatEvent *chatEvent )
 									QueueChatCommand( m_GHost->m_Language->NoMapsFound( ), User, Whisper );
 								else if( Matches == 1 )
 								{
-									string File = LastMatch.filename( );
+									string File = LastMatch.filename( ).string( );
 									QueueChatCommand( m_GHost->m_Language->LoadingConfigFile( File ), User, Whisper );
 
 									// hackhack: create a config file in memory with the required information to load the map
