@@ -1664,7 +1664,7 @@ void CBNET :: ProcessChatEvent( CIncomingChatEvent *chatEvent )
 								for( directory_iterator i( MapCFGPath ); i != EndIterator; i++ )
 								{
 									string FileName = i->path( ).filename( ).string( );
-									string Stem = i->path( ).stem( );
+									string Stem = i->path( ).stem( ).string( );
 									transform( FileName.begin( ), FileName.end( ), FileName.begin( ), (int(*)(int))tolower );
 									transform( Stem.begin( ), Stem.end( ), Stem.begin( ), (int(*)(int))tolower );
 
@@ -1775,7 +1775,7 @@ void CBNET :: ProcessChatEvent( CIncomingChatEvent *chatEvent )
 								for( directory_iterator i( MapPath ); i != EndIterator; i++ )
 								{
 									string FileName = i->path( ).filename( ).string( );
-									string Stem = i->path( ).stem( );
+									string Stem = i->path( ).stem( ).string( );
 									transform( FileName.begin( ), FileName.end( ), FileName.begin( ), (int(*)(int))tolower );
 									transform( Stem.begin( ), Stem.end( ), Stem.begin( ), (int(*)(int))tolower );
 
