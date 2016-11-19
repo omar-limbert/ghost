@@ -955,7 +955,7 @@ bool CAdminGame :: EventPlayerBotCommand( CGamePlayer *player, string command, s
 							SendChat( player, m_GHost->m_Language->NoMapConfigsFound( ) );
 						else if( Matches == 1 )
 						{
-							string File = LastMatch.filename( );
+							string File = LastMatch.filename( ).string( );
 							SendChat( player, m_GHost->m_Language->LoadingConfigFile( m_GHost->m_MapCFGPath + File ) );
 							CConfig MapCFG;
 							MapCFG.Read( LastMatch.string( ) );
