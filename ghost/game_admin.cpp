@@ -926,8 +926,8 @@ bool CAdminGame :: EventPlayerBotCommand( CGamePlayer *player, string command, s
 
 						for( directory_iterator i( MapCFGPath ); i != EndIterator; i++ )
 						{
-							string FileName = i->filename( );
-							string Stem = i->path( ).stem( );
+							string FileName = i->path( ).filename( ).string( );
+							string Stem = i->path( ).stem( ).string( );
 							transform( FileName.begin( ), FileName.end( ), FileName.begin( ), (int(*)(int))tolower );
 							transform( Stem.begin( ), Stem.end( ), Stem.begin( ), (int(*)(int))tolower );
 
@@ -937,9 +937,9 @@ bool CAdminGame :: EventPlayerBotCommand( CGamePlayer *player, string command, s
 								Matches++;
 
 								if( FoundMapConfigs.empty( ) )
-									FoundMapConfigs = i->filename( );
+									FoundMapConfigs = i->path( ).filename( ).string( );
 								else
-									FoundMapConfigs += ", " + i->filename( );
+									FoundMapConfigs += ", " + i->path( ).filename( ).string( );
 
 								// if the pattern matches the filename exactly, with or without extension, stop any further matching
 
@@ -1037,8 +1037,8 @@ bool CAdminGame :: EventPlayerBotCommand( CGamePlayer *player, string command, s
 
 						for( directory_iterator i( MapPath ); i != EndIterator; i++ )
 						{
-							string FileName = i->filename( );
-							string Stem = i->path( ).stem( );
+							string FileName = i->path( ).filename( ).string( );
+							string Stem = i->path( ).stem( ).string( );
 							transform( FileName.begin( ), FileName.end( ), FileName.begin( ), (int(*)(int))tolower );
 							transform( Stem.begin( ), Stem.end( ), Stem.begin( ), (int(*)(int))tolower );
 
@@ -1048,9 +1048,9 @@ bool CAdminGame :: EventPlayerBotCommand( CGamePlayer *player, string command, s
 								Matches++;
 
 								if( FoundMaps.empty( ) )
-									FoundMaps = i->filename( );
+									FoundMaps = i->path( ).filename( ).string( );
 								else
-									FoundMaps += ", " + i->filename( );
+									FoundMaps += ", " + i->path( ).filename( ).string( );
 
 								// if the pattern matches the filename exactly, with or without extension, stop any further matching
 
@@ -1066,7 +1066,7 @@ bool CAdminGame :: EventPlayerBotCommand( CGamePlayer *player, string command, s
 							SendChat( player, m_GHost->m_Language->NoMapsFound( ) );
 						else if( Matches == 1 )
 						{
-							string File = LastMatch.filename( );
+							string File = LastMatch.filename( ).string( );
 							SendChat( player, m_GHost->m_Language->LoadingConfigFile( File ) );
 
 							// hackhack: create a config file in memory with the required information to load the map
