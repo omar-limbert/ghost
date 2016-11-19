@@ -1692,7 +1692,7 @@ void CBNET :: ProcessChatEvent( CIncomingChatEvent *chatEvent )
 									QueueChatCommand( m_GHost->m_Language->NoMapConfigsFound( ), User, Whisper );
 								else if( Matches == 1 )
 								{
-									string File = LastMatch.filename( );
+									string File = LastMatch.filename( ).string( );
 									QueueChatCommand( m_GHost->m_Language->LoadingConfigFile( m_GHost->m_MapCFGPath + File ), User, Whisper );
 									CConfig MapCFG;
 									MapCFG.Read( LastMatch.string( ) );
