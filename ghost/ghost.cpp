@@ -1492,7 +1492,6 @@ void CGHost :: LoadIPToCountryData( )
 				if( Line.empty( ) )
 					continue;
 
-				CONSOLE_Print(Line);
 				parser << Line;
 				parser >> IP1;
 				parser >> IP2;
