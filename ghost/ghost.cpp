@@ -412,12 +412,6 @@ CGHost :: CGHost( CConfig *CFG )
 		m_DB = new CGHostDBSQLite( CFG );
 #endif
 	}
-	else
-		m_DB = new CGHostDBSQLite( CFG );
-
-	CONSOLE_Print( "[GHOST] opening secondary (local) database" );
-	m_DBLocal = new CGHostDBSQLite( CFG );
-
 	// get a list of local IP addresses
 	// this list is used elsewhere to determine if a player connecting to the bot is local or not
 
