@@ -1,0 +1,12 @@
+[Unit]
+Description=Bnetd Server
+After=network.target
+
+[Service]
+User=root
+Restart=always
+Type=forking
+ExecStart=/usr/local/pvpgn/sbin/bnetd
+
+[Install]
+WantedBy=multi-user.target
