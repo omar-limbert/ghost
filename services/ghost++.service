@@ -1,0 +1,13 @@
+[Unit]
+Description=Ghost++ Bot
+After=bnetd.service
+Requires=bnetd.service
+
+[Service]
+User=root
+Restart=always
+Type=forking
+ExecStart=/home/ubuntu/ghost++/ghost++
+
+[Install]
+WantedBy=multi-user.target
