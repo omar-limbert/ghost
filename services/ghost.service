@@ -7,7 +7,7 @@ Requires=bnetd.service
 User=root
 Restart=always
 Type=forking
-ExecStart=/home/ubuntu/ghost++/ghost++
+ExecStart=/home/ubuntu/ghost++/ghost++.sh
 
 [Install]
 WantedBy=multi-user.target
