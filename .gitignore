@@ -1,9 +1,13 @@
-# Created by .ignore support plugin (hsz.mobi)
-### Example user template template
-### Example user template
-
-# IntelliJ project files
+#IDE
 .idea
-*.iml
-out
-gen
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+#Ghost++ generated files
+ghost.log
+ghost.dbs
+ghost.cfg
