@@ -24,10 +24,8 @@ CC = gcc
 DFLAGS = -D__SYS_ZLIB
 OFLAGS =
 LFLAGS = -lbz2 -lz
-CXXFLAGS = -O2 -Wno-narrowing -std=c++98
 CFLAGS = -fPIC
 CFLAGS += $(OFLAGS) $(DFLAGS)
-
 
 OBJS = SCommon.o SCompression.o SFileCompactArchive.o \
        SFileCreateArchiveEx.o SFileExtractFile.o SFileFindFile.o \
@@ -58,10 +56,10 @@ clean:
 	rm -f $(OBJS) $(COBJS) $(LIB)
 
 $(OBJS): %.o: %.cpp
-	$(C++) -o $@ $(CFLAGS) $(CXXFLAGS) -c $<
+	$(C++) -o $@ $(CFLAGS) -c $<
 
 $(COBJS): %.o: %.c
-	$(CC) -o $@ $(CFLAGS) $(CXXFLAGS) -c $<
+	$(CC) -o $@ $(CFLAGS) -c $<
 
 $(LIB): $(OBJS) $(COBJS)
 

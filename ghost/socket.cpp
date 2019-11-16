@@ -32,20 +32,14 @@
 // CSocket
 //
 
-CSocket :: CSocket( )
+CSocket :: CSocket( ) :  m_Socket( INVALID_SOCKET ), m_HasError( false ), m_Error( 0 )
 {
-	m_Socket = INVALID_SOCKET;
-	memset( &m_SIN, 0, sizeof( m_SIN ) );
-	m_HasError = false;
-	m_Error = 0;
+        memset( &m_SIN, 0, sizeof( m_SIN ) );
 }
 
-CSocket :: CSocket( SOCKET nSocket, struct sockaddr_in nSIN )
+CSocket :: CSocket( SOCKET nSocket, struct sockaddr_in nSIN ) : m_Socket( nSocket ), m_SIN( nSIN ), m_HasError( false ), m_Error( 0 )
 {
-	m_Socket = nSocket;
-	m_SIN = nSIN;
-	m_HasError = false;
-	m_Error = 0;
+
 }
 
 CSocket :: ~CSocket( )
@@ -159,12 +153,9 @@ void CSocket :: Reset( )
 // CTCPSocket
 //
 
-CTCPSocket :: CTCPSocket( ) : CSocket( )
+CTCPSocket :: CTCPSocket( ) : CSocket( ), m_Connected( false ), m_LastRecv( GetTime( ) ), m_LastSend( GetTime( ) )
 {
 	Allocate( SOCK_STREAM );
-	m_Connected = false;
-	m_LastRecv = GetTime( );
-	m_LastSend = GetTime( );
 
 	// make socket non blocking
 
@@ -251,24 +242,8 @@ void CTCPSocket :: DoRecv( fd_set *fd )
 
 		char buffer[1024];
 		int c = recv( m_Socket, buffer, 1024, 0 );
-
-		if( c == SOCKET_ERROR && GetLastError( ) != EWOULDBLOCK )
-		{
-			// receive error
-
-			m_HasError = true;
-			m_Error = GetLastError( );
-			CONSOLE_Print( "[TCPSOCKET] error (recv) - " + GetErrorString( ) );
-			return;
-		}
-		else if( c == 0 )
-		{
-			// the other end closed the connection
-
-			CONSOLE_Print( "[TCPSOCKET] closed by remote host" );
-			m_Connected = false;
-		}
-		else if( c > 0 )
+		
+		if( c > 0 )
 		{
 			// success! add the received data to the buffer
 
@@ -287,6 +262,22 @@ void CTCPSocket :: DoRecv( fd_set *fd )
 			m_RecvBuffer += string( buffer, c );
 			m_LastRecv = GetTime( );
 		}
+		else if( c == SOCKET_ERROR && GetLastError( ) != EWOULDBLOCK )
+		{
+			// receive error
+
+			m_HasError = true;
+			m_Error = GetLastError( );
+			CONSOLE_Print( "[TCPSOCKET] error (recv) - " + GetErrorString( ) );
+			return;
+		}
+		else if( c == 0 )
+		{
+			// the other end closed the connection
+
+			CONSOLE_Print( "[TCPSOCKET] closed by remote host" );
+			m_Connected = false;
+		}
 	}
 }
 
@@ -300,17 +291,8 @@ void CTCPSocket :: DoSend( fd_set *send_fd )
 		// socket is ready, send it
 
 		int s = send( m_Socket, m_SendBuffer.c_str( ), (int)m_SendBuffer.size( ), MSG_NOSIGNAL );
-
-		if( s == SOCKET_ERROR && GetLastError( ) != EWOULDBLOCK )
-		{
-			// send error
-
-			m_HasError = true;
-			m_Error = GetLastError( );
-			CONSOLE_Print( "[TCPSOCKET] error (send) - " + GetErrorString( ) );
-			return;
-		}
-		else if( s > 0 )
+		
+		if( s > 0 )
 		{
 			// success! only some of the data may have been sent, remove it from the buffer
 
@@ -328,6 +310,15 @@ void CTCPSocket :: DoSend( fd_set *send_fd )
 
 			m_SendBuffer = m_SendBuffer.substr( s );
 			m_LastSend = GetTime( );
+		}
+		else if( s == SOCKET_ERROR && GetLastError( ) != EWOULDBLOCK )
+		{
+			// send error
+
+			m_HasError = true;
+			m_Error = GetLastError( );
+			CONSOLE_Print( "[TCPSOCKET] error (send) - " + GetErrorString( ) );
+			return;
 		}
 	}
 }
@@ -354,9 +345,9 @@ void CTCPSocket :: SetNoDelay( bool noDelay )
 // CTCPClient
 //
 
-CTCPClient :: CTCPClient( ) : CTCPSocket( )
+CTCPClient :: CTCPClient( ) : CTCPSocket( ), m_Connecting( false )
 {
-	m_Connecting = false;
+
 }
 
 CTCPClient :: ~CTCPClient( )
@@ -779,19 +770,19 @@ void CUDPServer :: RecvFrom( fd_set *fd, struct sockaddr_in *sin, string *messag
 		int c = recvfrom( m_Socket, buffer, 1024, 0, (struct sockaddr *)sin, (socklen_t *)&AddrLen );
 #endif
 
-		if( c == SOCKET_ERROR && GetLastError( ) != EWOULDBLOCK )
+		if( c > 0 )
+		{
+			// success!
+
+			*message = string( buffer, c );
+		}
+		else if( c == SOCKET_ERROR && GetLastError( ) != EWOULDBLOCK )
 		{
 			// receive error
 
 			m_HasError = true;
 			m_Error = GetLastError( );
 			CONSOLE_Print( "[UDPSERVER] error (recvfrom) - " + GetErrorString( ) );
-		}
-		else if( c > 0 )
-		{
-			// success!
-
-			*message = string( buffer, c );
 		}
 	}
 }

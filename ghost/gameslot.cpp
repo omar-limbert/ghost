@@ -25,7 +25,7 @@
 // CGameSlot
 //
 
-CGameSlot :: CGameSlot( BYTEARRAY &n )
+CGameSlot :: CGameSlot( BYTEARRAY &n ) : m_PID( 0 ), m_DownloadStatus( 255 ), m_SlotStatus( SLOTSTATUS_OPEN ), m_Computer( 0 ), m_Team( 0 ), m_Colour( 1 ), m_Race( SLOTRACE_RANDOM ), m_ComputerType( SLOTCOMP_NORMAL ), m_Handicap( 100 )
 {
 	if( n.size( ) >= 7 )
 	{
@@ -39,39 +39,16 @@ CGameSlot :: CGameSlot( BYTEARRAY &n )
 
 		if( n.size( ) >= 8 )
 			m_ComputerType = n[7];
-		else
-			m_ComputerType = SLOTCOMP_NORMAL;
 
 		if( n.size( ) >= 9 )
 			m_Handicap = n[8];
-		else
-			m_Handicap = 100;
-	}
-	else
-	{
-		m_PID = 0;
-		m_DownloadStatus = 255;
-		m_SlotStatus = SLOTSTATUS_OPEN;
-		m_Computer = 0;
-		m_Team = 0;
-		m_Colour = 1;
-		m_Race = SLOTRACE_RANDOM;
-		m_ComputerType = SLOTCOMP_NORMAL;
-		m_Handicap = 100;
 	}
 }
 
 CGameSlot :: CGameSlot( unsigned char nPID, unsigned char nDownloadStatus, unsigned char nSlotStatus, unsigned char nComputer, unsigned char nTeam, unsigned char nColour, unsigned char nRace, unsigned char nComputerType, unsigned char nHandicap )
+    : m_PID( nPID ), m_DownloadStatus( nDownloadStatus ), m_SlotStatus( nSlotStatus ), m_Computer( nComputer ), m_Team( nTeam ), m_Colour( nColour ), m_Race( nRace ), m_ComputerType( nComputerType ), m_Handicap( nHandicap )
 {
-	m_PID = nPID;
-	m_DownloadStatus = nDownloadStatus;
-	m_SlotStatus = nSlotStatus;
-	m_Computer = nComputer;
-	m_Team = nTeam;
-	m_Colour = nColour;
-	m_Race = nRace;
-	m_ComputerType = nComputerType;
-	m_Handicap = nHandicap;
+
 }
 
 CGameSlot :: ~CGameSlot( )

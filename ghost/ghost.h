@@ -133,6 +133,7 @@ public:
 	uint32_t m_ReplayBuildNumber;			// config value: replay build number (for saving replays)
 	bool m_TCPNoDelay;						// config value: use Nagle's algorithm or not
 	uint32_t m_MatchMakingMethod;			// config value: the matchmaking method
+	uint32_t m_MapGameType;                 // config value: the MapGameType overwrite (aka: refresh hack)
 
 	CGHost( CConfig *CFG );
 	~CGHost( );
